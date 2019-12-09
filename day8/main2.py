@@ -4,7 +4,7 @@ inp = list(open('input', 'r').read().rstrip())
 pixels = 25 * 6
 
 layers = [inp[n: n + pixels] for n in range(0, len(inp), pixels)]
-transposed = list(map(list, zip(*layers)))
+transposed = map(list, zip(*layers))
 
 def reducer(colour1, colour2):
     return colour1 if colour1 in ('0', '1') else colour2
