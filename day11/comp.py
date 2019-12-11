@@ -12,6 +12,10 @@ class IntcodeComputer:
         self.ptr = 0
         self.rel_ptr = 0
         self.modes = []
+        self.outputs = []
+
+    def fetch_outputs(self):
+        return self.outputs
 
     def process_instruction(self):
         op = self.prog[self.ptr]
@@ -40,6 +44,8 @@ class IntcodeComputer:
             self.prog[rel_addr] = val
 
     def run(self, input_no):
+        self.outputs = []
+        processed_input = False
         while self.prog[self.ptr] != HALT:
             opcode, *self.modes = self.process_instruction()
             param1, param2 = self.read(1), self.read(2)
@@ -50,10 +56,14 @@ class IntcodeComputer:
                 self.write(param1 * param2, 3)
                 self.ptr += 4
             elif opcode == 3:
+                if processed_input:
+                    break
                 self.write(input_no, 1)
+                processed_input = True
                 self.ptr += 2
             elif opcode == 4:
-                print(param1)
+                #print(param1)
+                self.outputs.append(param1)
                 self.ptr += 2
             elif opcode == 5:
                 self.ptr = self.ptr + 3 if param1 == 0 else param2
@@ -69,7 +79,7 @@ class IntcodeComputer:
                 self.rel_ptr += param1
                 self.ptr += 2
 
-p1 = 1
-p2 = 2
-computer = IntcodeComputer('input')
-computer.run(p1)
+#p1 = 1
+#p2 = 2
+#computer = IntcodeComputer('input')
+#computer.run(p1)
